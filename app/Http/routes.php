@@ -19,4 +19,6 @@ Route::auth();
 
 Route::get('home', 'HomeController@index');
 Route::get('departments', 'Department\DepartmentController@index');
-Route::post('departments', 'Department\DepartmentController@addDepartment');
+Route::post('departments', 'Department\DepartmentController@store');
+Route::get('departments/edit/{id}', 'Department\DepartmentController@edit');
+Route::get('departments/delete/{id}', 'Department\DepartmentController@delete');
