@@ -23,6 +23,10 @@ class DepartmentController extends Controller {
     }
 
     public function store(Request $request) {
+        if ($request->method() == Request::METHOD_GET) {
+            return view('department.add');
+        }
+
         $deptCode = $request->input('txt_dept_code');
         $deptName = $request->input('txt_dept_name');
         $deptDesc = $request->input('txt_dept_desc');
@@ -40,7 +44,7 @@ class DepartmentController extends Controller {
             ]
         ]);
 
-        return view('add.index')->with('message', 'Successfully added department');
+        return redirect('departments')->with('message', 'Successfully added department');
     }
 
     public function edit(Request $request) {
@@ -57,7 +61,8 @@ class DepartmentController extends Controller {
             $response = $client->request('DELETE', "departments/{$id}");
 
             $result = json_decode($response->getBody());
-            dd($result);
+            
+            return redirect('departments');
         } catch (Exception $ex) {
             
         }

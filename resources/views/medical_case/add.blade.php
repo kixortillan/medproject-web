@@ -4,7 +4,7 @@
 <form action="{{ url('departments/add') }}" method="post" class="form-horizontal">
     {{ csrf_field() }}
     <fieldset>
-        <legend>Add Department</legend>
+        <legend>Add Medical Case</legend>
         <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2">Department Code</label>
             <div class="col-sm-6">
