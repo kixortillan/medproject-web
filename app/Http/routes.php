@@ -27,5 +27,12 @@ Route::get('departments/edit/{id}', 'Department\DepartmentController@edit');
 Route::get('departments/delete/{id}', 'Department\DepartmentController@delete');
 
 Route::get('cases', 'MedicalCase\MedicalCaseController@index');
+Route::get('cases/add', 'MedicalCase\MedicalCaseController@store');
+Route::post('cases/add', 'MedicalCase\MedicalCaseController@store');
+Route::get('cases/edit/{id}', 'MedicalCase\MedicalCaseController@edit');
+Route::get('cases/delete/{id}', 'MedicalCase\MedicalCaseController@delete');
 
-Route::get('{state}', 'MedicalCase\MedicalCaseController@index');
+Route::get('patients/add', 'MedicalCase\MedicalCaseController@store');
+Route::post('patients/add', 'MedicalCase\MedicalCaseController@store');
+Route::get('patients/edit/{id}', 'Department\DepartmentController@edit');
+Route::get('patients/delete/{id}', 'Department\DepartmentController@delete');
