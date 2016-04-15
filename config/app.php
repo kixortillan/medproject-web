@@ -204,4 +204,7 @@ return [
 
     ],
 
+    'name' => 'medproject',
+    
+    'title' => 'Sample Medical Storage',
 ];
