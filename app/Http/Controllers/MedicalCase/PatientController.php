@@ -13,8 +13,8 @@ class PatientController extends Controller {
         parent::__construct();
     }
 
-    public function index(Request $request) {
-        $response = $this->api->request(Request::METHOD_GET, 'patients');
+    public function index(Request $request, $pageNum = 0) {
+        $response = $this->api->request(Request::METHOD_GET, "patients?page={$pageNum}");
 
         $patients = json_decode($response->getBody());
 
@@ -26,19 +26,23 @@ class PatientController extends Controller {
             return view('patient.add');
         }
 
-        $deptCode = $request->input('txt_dept_code');
-        $deptName = $request->input('txt_dept_name');
-        $deptDesc = $request->input('txt_dept_desc');
+        $firstName = $request->input('txt_first_name', '');
+        $middleName = $request->input('txt_middle_name', '');
+        $lastName = $request->input('txt_last_name', '');
+        $address = $request->input('txt_address', '');
+        $postalCode = $request->input('txt_postal_code', '');
 
-        $response = $this->api->request('POST', 'departments', [
+        $response = $this->api->request('POST', 'patients', [
             'json' => [
-                'code' => $deptCode,
-                'name' => $deptName,
-                'desc' => $deptDesc,
+                'first_name' => $firstName,
+                'middle_name' => $middleName,
+                'last_name' => $lastName,
+                'address' => $address,
+                'postal_code' => $postalCode,
             ]
         ]);
 
-        return redirect('departments')->with('message', 'Successfully added department');
+        return redirect('patients')->with('message', 'Successfully added patient');
     }
 
     public function edit(Request $request, $id) {
