@@ -11,6 +11,14 @@
                 <input type="text" value="{{ sprintf("MCN-%s%s", strtotime('now'), mt_rand(10000, 99999)) }}" name="txt_dept_code" class="form-control" readonly>
             </div>
         </div>
+        @if(isset($patient))
+        <div class="form-group">
+            <label class="col-sm-offset-2 col-sm-2">Patient</label>
+            <div class="col-sm-6">
+                <a href="#">{{ $patient[0]->full_name }}</a>
+            </div>
+        </div>
+        @else
         <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2">Patient</label>
             <div class="col-sm-6">
@@ -19,11 +27,15 @@
                 </select>
             </div>
         </div>
+        @endif
         <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2">Department Code</label>
             <div class="col-sm-6">
                 <select class="form-control">
                     <option>Choose one</option>
+                    @foreach($departments as $department)
+                    <option value="{{ $department->id }}">{{ $department->code }}</option>
+                    @endforeach
                 </select>
             </div>
         </div>

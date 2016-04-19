@@ -37,3 +37,4 @@ Route::get('patients/add', 'MedicalCase\PatientController@store');
 Route::post('patients/add', 'MedicalCase\PatientController@store');
 Route::get('patients/edit/{id}', 'MedicalCase\PatientController@edit');
 Route::get('patients/delete/{id}', 'MedicalCase\PatientController@delete');
+Route::get('patients/{id}/cases/add', 'MedicalCase\MedicalCaseController@store');

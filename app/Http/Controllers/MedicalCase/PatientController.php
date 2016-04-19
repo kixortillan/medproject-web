@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\MedicalCase;
 
+use Illuminate\Pagination\LengthAwarePaginator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use GuzzleHttp\Client;
-use Exception;
+use Illuminate\Support\Collection;
 
 class PatientController extends Controller {
 
@@ -13,12 +13,16 @@ class PatientController extends Controller {
         parent::__construct();
     }
 
-    public function index(Request $request, $pageNum = 0) {
-        $response = $this->api->request(Request::METHOD_GET, "patients?page={$pageNum}");
+    public function index(Request $request) {
+        $page = $request->query('page', 1);
+
+        $response = $this->api->request(Request::METHOD_GET, "patients?page={$page}");
 
         $patients = json_decode($response->getBody());
 
-        return view('patient.index', ['patients' => $patients->data]);
+        $paginator = new LengthAwarePaginator($patients->data, $patients->total, 1, \Illuminate\Pagination\Paginator::resolveCurrentPage(), ['path' => $request->path()]);
+
+        return view('patient.index', ['patients' => $patients->data, 'result' => $paginator]);
     }
 
     public function store(Request $request) {
@@ -51,6 +55,10 @@ class PatientController extends Controller {
 
     public function delete(Request $request, $id) {
         
+    }
+
+    public function fileCase(Request $request, $id) {
+        return view('medical_case.add');
     }
 
 }

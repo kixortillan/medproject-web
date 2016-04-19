@@ -13,15 +13,28 @@ class MedicalCaseController extends Controller {
         return view('medical_case.index');
     }
 
-    public function store(Request $request) {
+    public function store(Request $request, $id = null) {
         if ($request->method() == Request::METHOD_GET) {
-            return view('medical_case.add');
+            if (is_null($id)) {
+                return view('medical_case.add');
+            } else {
+                $response = $this->api->request(Request::METHOD_GET, "patients/{$id}");
+                $patient = json_decode($response->getBody());
+                
+                $response = $this->api->request(Request::METHOD_GET, "departments");
+                $departments = json_decode($response->getBody());
+                
+                return view('medical_case.add', [
+                    'patient' => $patient->data,
+                    'departments' => $departments
+                ]);
+            }
         }
-        
-        try{
+
+        try {
             return redirect('cases');
         } catch (Exception $ex) {
-
+            
         }
     }
 
