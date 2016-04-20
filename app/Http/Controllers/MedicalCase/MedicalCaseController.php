@@ -19,14 +19,14 @@ class MedicalCaseController extends Controller {
                 return view('medical_case.add');
             } else {
                 $response = $this->api->request(Request::METHOD_GET, "patients/{$id}");
-                $patient = json_decode($response->getBody());
+                $body1 = json_decode($response->getBody());
                 
                 $response = $this->api->request(Request::METHOD_GET, "departments");
-                $departments = json_decode($response->getBody());
+                $body2 = json_decode($response->getBody());
                 
                 return view('medical_case.add', [
-                    'patient' => $patient->data,
-                    'departments' => $departments
+                    'patient' => $body1->data->patient,
+                    'departments' => $body2->data->departments
                 ]);
             }
         }

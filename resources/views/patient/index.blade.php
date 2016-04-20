@@ -11,24 +11,22 @@
         <table class="table table-bordered table-responsive table-striped table-hover table-condensed">
             <thead>
                 <tr>
+                    <th></th>
                     <th>Name</th>
                     <th>Date Registered</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody class="text-center">
-                @if(count($patients) < 1)
+                @if(count($result) < 1)
                 <tr>
                     <td colspan="5">
                         No records found.
                     </td>
                 </tr>
                 @endif
-                @foreach($patients as $patient)
+                @foreach($result as $patient)
                 <tr>
-                    <td>{{ $patient->full_name }}</td>
-                    <td>{{ $patient->date_registered }}</td>
-                    <td style="width: 50px;">
+                    <td>
                         <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="glyphicon glyphicon-menu-hamburger"></span>
@@ -40,6 +38,8 @@
                             </ul>
                         </div>
                     </td>
+                    <td>{{ $patient->full_name }}</td>
+                    <td>{{ $patient->date_registered }}</td>
                 </tr>
                 @endforeach
             </tbody>

@@ -15,7 +15,7 @@
         <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2">Patient</label>
             <div class="col-sm-6">
-                <a href="#">{{ $patient[0]->full_name }}</a>
+                <a href="{{ url("patients/edit/{$patient->id}") }}">{{ $patient->full_name }}</a>
             </div>
         </div>
         @else

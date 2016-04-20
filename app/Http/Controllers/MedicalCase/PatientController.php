@@ -18,11 +18,11 @@ class PatientController extends Controller {
 
         $response = $this->api->request(Request::METHOD_GET, "patients?page={$page}");
 
-        $patients = json_decode($response->getBody());
+        $body = json_decode($response->getBody());
 
-        $paginator = new LengthAwarePaginator($patients->data, $patients->total, 1, \Illuminate\Pagination\Paginator::resolveCurrentPage(), ['path' => $request->path()]);
+        $paginator = new LengthAwarePaginator($body->data->patients, $body->total, 1, \Illuminate\Pagination\Paginator::resolveCurrentPage(), ['path' => $request->path()]);
 
-        return view('patient.index', ['patients' => $patients->data, 'result' => $paginator]);
+        return view('patient.index', ['result' => $paginator]);
     }
 
     public function store(Request $request) {
