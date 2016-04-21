@@ -17,7 +17,7 @@ class DepartmentController extends Controller {
 
         $departments = json_decode($response->getBody());
 
-        return view('department.index', ['departments' => $departments->data]);
+        return view('department.index', ['departments' => $departments->data->departments]);
     }
 
     public function store(Request $request) {
