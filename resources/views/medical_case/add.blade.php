@@ -57,7 +57,7 @@
 @section('scripts')
 <script>
     $(document).ready(function () {
-        $("#btn_add_diagnosis").keyup(debounce(function () {
+        $("#txt_diagnosis").keyup(debounce(function () {
             alert('Stopped typing');
         }, 1000));
     });
