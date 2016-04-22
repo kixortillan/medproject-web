@@ -21,7 +21,7 @@ class MedicalCaseController extends Controller {
                 $response = $this->api->request(Request::METHOD_GET, "patients/{$id}");
                 $body1 = json_decode($response->getBody());
                 
-                $response = $this->api->request(Request::METHOD_GET, "departments");
+                $response = $this->api->request(Request::METHOD_GET, "departments?per_page=-1");
                 $body2 = json_decode($response->getBody());
                 
                 return view('medical_case.add', [
