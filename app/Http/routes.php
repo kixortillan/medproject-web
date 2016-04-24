@@ -25,6 +25,7 @@ Route::post('departments/add', 'Department\DepartmentController@store');
 
 Route::get('departments/edit/{id}', 'Department\DepartmentController@edit');
 Route::get('departments/delete/{id}', 'Department\DepartmentController@delete');
+Route::get('departments/search', 'MedicalCase\MedicalCaseController@search');
 
 Route::get('cases', 'MedicalCase\MedicalCaseController@index');
 Route::get('cases/add', 'MedicalCase\MedicalCaseController@store');

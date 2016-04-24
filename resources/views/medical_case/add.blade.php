@@ -44,7 +44,7 @@
         <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2">Diagnosis</label>
             <div class="col-sm-5">
-                <input type="text" class="form-control" id="txt_diagnosis" name="diagnosis">
+                <input type="text" class="form-control" id="autocomplete" name="departments">
             </div>
             <button id="btn_add_diagnosis" type="button" class="btn btn-primary col-sm-1">Add</button>
         </div>
@@ -57,9 +57,23 @@
 @section('scripts')
 <script>
     $(document).ready(function () {
-        $("#txt_diagnosis").keyup(debounce(function () {
-            alert('Stopped typing');
-        }, 1000));
+        $("#autocomplete").autocomplete({
+            serviceUrl: "{{ url('departments/search') }}",
+            onSelect: function (data) {
+                //alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
+                console.log(data);
+                return "<div>try</div>";
+            }
+        });
+        /*$.ajax({
+         url: "{{ url('departments/search') }}" + "?keyword=" + $("#txt_diagnosis").val(),
+         method: "GET",
+         crossDomain: true,
+         contentType: "application/json",
+         success: function (response) {
+         console.log(response);
+         }
+         });*/
     });
 </script>
 @endsection

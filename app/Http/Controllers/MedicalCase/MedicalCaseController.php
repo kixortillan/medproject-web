@@ -20,10 +20,10 @@ class MedicalCaseController extends Controller {
             } else {
                 $response = $this->api->request(Request::METHOD_GET, "patients/{$id}");
                 $body1 = json_decode($response->getBody());
-                
+
                 $response = $this->api->request(Request::METHOD_GET, "departments?per_page=-1");
                 $body2 = json_decode($response->getBody());
-                
+
                 return view('medical_case.add', [
                     'patient' => $body1->data->patient,
                     'departments' => $body2->data->departments
@@ -44,6 +44,25 @@ class MedicalCaseController extends Controller {
 
     public function delete() {
         
+    }
+
+    public function search(Request $request) {
+        $keyword = $request->query('query', null);
+
+        $response = $this->api->request("GET", "search/departments?keyword={$keyword}");
+
+        $departments = json_decode($response->getBody());
+
+        $json = [];
+
+        foreach ($departments->data->departments as $item) {
+            $json[] = [
+                'value' => $item->name,
+                'data' => $item->code,
+            ];
+        }
+
+        return response()->json(["query" => "Unit", "suggestions" => $json]);
     }
 
 }
