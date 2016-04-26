@@ -62,7 +62,7 @@ class MedicalCaseController extends Controller {
             ];
         }
 
-        return response()->json(["query" => "Unit", "suggestions" => $json]);
+        return response()->json(["query" => $keyword, "suggestions" => $json]);
     }
 
 }
