@@ -4,7 +4,6 @@ namespace App\Http\Controllers\MedicalCase;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use GuzzleHttp\Client;
 use Exception;
 
 class MedicalCaseController extends Controller {
@@ -44,25 +43,6 @@ class MedicalCaseController extends Controller {
 
     public function delete() {
         
-    }
-
-    public function search(Request $request) {
-        $keyword = $request->query('query', null);
-
-        $response = $this->api->request("GET", "search/departments?keyword={$keyword}");
-
-        $departments = json_decode($response->getBody());
-
-        $json = [];
-
-        foreach ($departments->data->departments as $item) {
-            $json[] = [
-                'value' => $item->name,
-                'data' => $item->code,
-            ];
-        }
-
-        return response()->json(["query" => $keyword, "suggestions" => $json]);
     }
 
 }

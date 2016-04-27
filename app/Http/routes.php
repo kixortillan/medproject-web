@@ -25,7 +25,7 @@ Route::post('departments/add', 'Department\DepartmentController@store');
 
 Route::get('departments/edit/{id}', 'Department\DepartmentController@edit');
 Route::get('departments/delete/{id}', 'Department\DepartmentController@delete');
-Route::get('departments/search', 'MedicalCase\MedicalCaseController@search');
+Route::get('departments/search', 'Department\DepartmentController@search');
 
 Route::get('cases', 'MedicalCase\MedicalCaseController@index');
 Route::get('cases/add', 'MedicalCase\MedicalCaseController@store');
@@ -39,3 +39,5 @@ Route::post('patients/add', 'MedicalCase\PatientController@store');
 Route::get('patients/edit/{id}', 'MedicalCase\PatientController@edit');
 Route::get('patients/delete/{id}', 'MedicalCase\PatientController@delete');
 Route::get('patients/{id}/cases/add', 'MedicalCase\MedicalCaseController@store');
+
+Route::get('diagnoses/search', 'MedicalCase\DiagnosisController@search');

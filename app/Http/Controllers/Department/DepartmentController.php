@@ -56,4 +56,23 @@ class DepartmentController extends Controller {
         }
     }
 
+    public function search(Request $request) {
+        $keyword = $request->query('query', null);
+
+        $response = $this->api->request("GET", "search/departments?keyword={$keyword}");
+
+        $departments = json_decode($response->getBody());
+
+        $json = [];
+
+        foreach ($departments->data->departments as $item) {
+            $json[] = [
+                'value' => $item->name,
+                'data' => $item->code,
+            ];
+        }
+
+        return response()->json(["query" => $keyword, "suggestions" => $json]);
+    }
+
 }

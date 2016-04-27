@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<form action="{{ url('departments/add') }}" method="post" class="form-horizontal">
+<form id="frm_add_mc" action="{{ url('departments/add') }}" method="post" class="form-horizontal">
     {{ csrf_field() }}
     <fieldset>
         <legend>Add Medical Case</legend>
@@ -44,9 +44,17 @@
         <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2">Diagnosis</label>
             <div class="col-sm-5">
-                <input type="text" class="form-control" id="autocomplete" name="departments">
+                <input type="text" class="form-control" id="txt_diagnosis_search" name="txt_diagnosis_search">
             </div>
             <button id="btn_add_diagnosis" type="button" class="btn btn-primary col-sm-1">Add</button>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Diagnoses</legend>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <ul id="lst_diagnoses" class="list-group"></ul>
+            </div>
         </div>
     </fieldset>
     <div class="form-group">
@@ -57,23 +65,17 @@
 @section('scripts')
 <script>
     $(document).ready(function () {
-        $("#autocomplete").autocomplete({
-            serviceUrl: "{{ url('departments/search') }}",
-            onSelect: function (data) {
-                //alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
-                console.log(data);
-                return "<div>try</div>";
-            }
+        $("#txt_diagnosis_search").autocomplete({
+            serviceUrl: "{{ url('diagnoses/search') }}",
         });
-        /*$.ajax({
-         url: "{{ url('departments/search') }}" + "?keyword=" + $("#txt_diagnosis").val(),
-         method: "GET",
-         crossDomain: true,
-         contentType: "application/json",
-         success: function (response) {
-         console.log(response);
-         }
-         });*/
+
+        $("#btn_add_diagnosis").click(function () {
+            $e = $("#txt_diagnosis_search");
+            $d = $e.val();
+            $e.val('');
+            $("#lst_diagnoses").append('<li class="list-group-item">' + $d + '</li>');
+            $("#frm_add_mc").append('<input type=hidden name="hdn_diagnoses[]" value="' + $d + '">');
+        });
     });
 </script>
 @endsection
