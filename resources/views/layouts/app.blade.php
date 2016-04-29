@@ -13,6 +13,7 @@
 
         <!-- Styles -->
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        <link href="//www.fuelcdn.com/fuelux/3.13.0/css/fuelux.min.css" rel="stylesheet">
         <link href="{{ url('css/app.css') }}" rel="stylesheet">
 
         <style>
@@ -77,7 +78,9 @@
         <!-- JavaScripts -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="//www.fuelcdn.com/fuelux/3.13.0/js/fuelux.min.js"></script>
         <script src="{{ url('jquery-plugins/autocomplete/jquery.autocomplete.js') }}"></script>
+        <script src="{{ url('typeahead/typeahead.bundle.js') }}"></script>
         <script src="{{ url('js/all.js') }}"></script>
         @yield('scripts')
     </body>

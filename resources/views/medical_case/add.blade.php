@@ -63,19 +63,53 @@
 </form>
 @endsection
 @section('scripts')
-<script>
-    $(document).ready(function () {
-        $("#txt_diagnosis_search").autocomplete({
-            serviceUrl: "{{ url('diagnoses/search') }}",
-        });
+<script type="text/javascript">
+    /*$(document).ready(function () {
+     $("#txt_diagnosis_search").autocomplete({
+     serviceUrl: "{{ url('diagnoses/search') }}",
+     });
+     
+     $("#btn_add_diagnosis").click(function () {
+     $e = $("#txt_diagnosis_search");
+     $d = $e.val();
+     $e.val('');
+     $("#lst_diagnoses").append('<li class="list-group-item">' + $d + '</li>');
+     $("#frm_add_mc").append('<input type=hidden name="hdn_diagnoses[]" value="' + $d + '">');
+     });
+     });*/
 
-        $("#btn_add_diagnosis").click(function () {
-            $e = $("#txt_diagnosis_search");
-            $d = $e.val();
-            $e.val('');
-            $("#lst_diagnoses").append('<li class="list-group-item">' + $d + '</li>');
-            $("#frm_add_mc").append('<input type=hidden name="hdn_diagnoses[]" value="' + $d + '">');
-        });
+    var diagnoses = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+            url: '{{ url('diagnoses/search') }}?query=%QUERY',
+            wildcard: '%QUERY',
+            filter: function (diagnosis) {
+                return $.map(diagnosis, function (item) {
+                    return {
+                        name: item.name,
+                        desc: item.desc,
+                    };
+                });
+            }
+        }
+    });
+
+    diagnoses.initialize();
+
+    $('#txt_diagnosis_search').typeahead({highlight: true}, {
+        name: 'diagnosis',
+        display: function(data){
+            return data.name;
+        },
+        source: diagnoses,
+        templates: {
+            empty: '<div class="noitems">No Items Found</div>',
+            header: '<div class="tt-header">Diagnosis</div>',
+            suggestion: function(data){
+                return '<div>' + data.name + '</div>';
+            },
+        }
     });
 </script>
 @endsection
