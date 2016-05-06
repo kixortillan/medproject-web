@@ -27,10 +27,21 @@
 
 .tt-header {
   padding: 6px 12px;
-  border-bottom: 1px solid #ccc; }
+  border-bottom: 1px solid #ccc;
+  font-weight: bold;
+  font-style: italic; }
 
 .tt-menu {
   width: 100%;
-  border: 1px solid #ccc; }
+  border: 1px solid #ccc;
+  background-color: #fff;
+  max-height: 100px;
+  overflow-y: scroll; }
+
+.tt-suggestion {
+  padding: 6px 12px; }
+
+.noitems {
+  padding: 6px 12px; }
 
 /*# sourceMappingURL=app.css.map */

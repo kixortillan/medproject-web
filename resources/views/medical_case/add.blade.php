@@ -30,14 +30,16 @@
         @endif
         <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2">Department Code</label>
-            <div class="col-sm-6">
-                <select class="form-control">
+            <div class="col-sm-5">
+<!--                <select class="form-control">
                     <option>Choose one</option>
                     @foreach($departments as $department)
                     <option value="{{ $department->id }}">{{ $department->code }}</option>
                     @endforeach
-                </select>
+                </select>-->
+                <input type="text" class="form-control" id="txt_department_search" name="txt_department_search">
             </div>
+            <button id="btn_add_department" type="button" class="btn btn-primary col-sm-1">Add</button>
         </div>
     </fieldset>
     <fieldset>
@@ -54,6 +56,14 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <ul id="lst_diagnoses" class="list-group"></ul>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Departments</legend>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <ul id="lst_departments" class="list-group"></ul>
             </div>
         </div>
     </fieldset>
@@ -110,6 +120,56 @@
                 return '<div>' + data.name + '</div>';
             },
         }
+    });
+    
+    var dept = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+            url: '{{ url('departments/search') }}?query=%QUERY',
+            wildcard: '%QUERY',
+            filter: function (dept) {
+                return $.map(dept, function (item) {
+                    return {
+                        name: item.name,
+                        desc: item.code,
+                    };
+                });
+            }
+        }
+    });
+
+    dept.initialize();
+
+    $('#txt_department_search').typeahead({highlight: true}, {
+        name: 'diagnosis',
+        display: function(data){
+            return data.name;
+        },
+        source: dept,
+        templates: {
+            empty: '<div class="noitems">No Items Found</div>',
+            header: '<div class="tt-header">Departments</div>',
+            suggestion: function(data){
+                return '<div>' + data.name + '</div>';
+            },
+        }
+    });
+    
+    $("#btn_add_diagnosis").click(function () {
+        e = $("#txt_diagnosis_search");
+        d = e.val();
+        e.val('');
+        $("#lst_diagnoses").append('<li class="list-group-item">' + d + '</li>');
+        $("#frm_add_mc").append('<input type=hidden name="hdn_diagnoses[]" value="' + d + '">');
+    });
+    
+    $("#btn_add_department").click(function () {
+        e = $("#txt_department_search");
+        d = e.val();
+        e.val('');
+        $("#lst_departments").append('<li class="list-group-item">' + d + '</li>');
+        $("#frm_add_mc").append('<input type=hidden name="hdn_departments[]" value="' + d + '">');
     });
 </script>
 @endsection
