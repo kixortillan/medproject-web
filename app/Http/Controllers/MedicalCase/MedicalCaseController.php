@@ -12,7 +12,7 @@ class MedicalCaseController extends Controller {
         return view('medical_case.index');
     }
 
-    public function store(Request $request, $id = null) {
+    public function create(Request $request, $id = null) {
         if ($request->method() == Request::METHOD_GET) {
             if (is_null($id)) {
                 return view('medical_case.add');
@@ -20,20 +20,30 @@ class MedicalCaseController extends Controller {
                 $response = $this->api->request(Request::METHOD_GET, "patients/{$id}");
                 $body1 = json_decode($response->getBody());
 
-                $response = $this->api->request(Request::METHOD_GET, "departments?per_page=-1");
-                $body2 = json_decode($response->getBody());
-
                 return view('medical_case.add', [
                     'patient' => $body1->data->patient,
-                    'departments' => $body2->data->departments
                 ]);
             }
         }
+    }
 
+    public function store(Request $request) {
         try {
-            return redirect('cases');
+            $medCaseNum = $request->input('txt_med_case_num');
+            $patientId = $request->input('hdn_patient_id');
+            $departmentIds = $request->input('hdn_departments');
+            $diagnoses = $request->input('hdn_diagnoses');
+
+            $this->api->request(Request::METHOD_POST, "cases", [
+                'json' => [
+                    'serial_num' => $medCaseNum,
+                    'patient_id' => $patientId,
+                    'departments' => $departmentIds,
+                    'diagnosis' => $diagnoses,
+                ]
+            ]);
         } catch (Exception $ex) {
-            
+            throw $ex;
         }
     }
 

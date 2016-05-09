@@ -44,4 +44,10 @@
 .noitems {
   padding: 6px 12px; }
 
+.btn-rmv-department:hover {
+  cursor: pointer; }
+
+.btn-rmv-diagnosis:hover {
+  cursor: pointer; }
+
 /*# sourceMappingURL=app.css.map */

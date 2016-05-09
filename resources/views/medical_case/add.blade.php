@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-<form id="frm_add_mc" action="{{ url('departments/add') }}" method="post" class="form-horizontal">
+<form id="frm_add_mc" action="{{ url('cases/add') }}" method="post" class="form-horizontal">
     {{ csrf_field() }}
     <fieldset>
         <legend>Add Medical Case</legend>
         <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2">Case Serial Number</label>
             <div class="col-sm-6">
-                <input type="text" value="{{ sprintf("MCN-%s%s", strtotime('now'), mt_rand(10000, 99999)) }}" name="txt_dept_code" class="form-control" readonly>
+                <input name="txt_med_case_num" type="text" value="{{ sprintf("MCN-%s%s", strtotime('now'), mt_rand(10000, 99999)) }}" class="form-control" readonly>
             </div>
         </div>
         @if(isset($patient))
@@ -16,6 +16,7 @@
             <label class="col-sm-offset-2 col-sm-2">Patient</label>
             <div class="col-sm-6">
                 <a href="{{ url("patients/edit/{$patient->id}") }}">{{ $patient->full_name }}</a>
+                <input name="hdn_patient_id[]" type="hidden" value="{{ $patient->id }}">
             </div>
         </div>
         @else
@@ -31,12 +32,6 @@
         <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2">Department Code</label>
             <div class="col-sm-5">
-<!--                <select class="form-control">
-                    <option>Choose one</option>
-                    @foreach($departments as $department)
-                    <option value="{{ $department->id }}">{{ $department->code }}</option>
-                    @endforeach
-                </select>-->
                 <input type="text" class="form-control" id="txt_department_search" name="txt_department_search">
             </div>
             <button id="btn_add_department" type="button" class="btn btn-primary col-sm-1">Add</button>
@@ -74,20 +69,6 @@
 @endsection
 @section('scripts')
 <script type="text/javascript">
-    /*$(document).ready(function () {
-     $("#txt_diagnosis_search").autocomplete({
-     serviceUrl: "{{ url('diagnoses/search') }}",
-     });
-     
-     $("#btn_add_diagnosis").click(function () {
-     $e = $("#txt_diagnosis_search");
-     $d = $e.val();
-     $e.val('');
-     $("#lst_diagnoses").append('<li class="list-group-item">' + $d + '</li>');
-     $("#frm_add_mc").append('<input type=hidden name="hdn_diagnoses[]" value="' + $d + '">');
-     });
-     });*/
-
     var diagnoses = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace,
         queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -160,7 +141,9 @@
         e = $("#txt_diagnosis_search");
         d = e.val();
         e.val('');
-        $("#lst_diagnoses").append('<li class="list-group-item">' + d + '</li>');
+        if(d == '')return;
+        if($("#frm_add_mc").find("input[value='" + d + "']").length > 0) return;
+        $("#lst_diagnoses").append('<li class="list-group-item">' + d + '<span class="btn-rmv-diagnosis pull-right glyphicon glyphicon-remove" data-item="' + d + '"></span></li>');
         $("#frm_add_mc").append('<input type=hidden name="hdn_diagnoses[]" value="' + d + '">');
     });
     
@@ -168,8 +151,24 @@
         e = $("#txt_department_search");
         d = e.val();
         e.val('');
-        $("#lst_departments").append('<li class="list-group-item">' + d + '</li>');
+        if(d == '')return;
+        if($("#frm_add_mc").find("input[value='" + d + "']").length > 0) return;
+        $("#lst_departments").append('<li class="list-group-item">' + d + '<span class="btn-rmv-department pull-right glyphicon glyphicon-remove" data-item="' + d + '"></span></li>');
         $("#frm_add_mc").append('<input type=hidden name="hdn_departments[]" value="' + d + '">');
+    });
+    
+    $("#frm_add_mc").on("click", ".btn-rmv-diagnosis", function(e){
+        e.preventDefault();
+        el = $(e.target);
+        $("#lst_diagnoses").find("li:contains('" + el.attr('data-item') + "')").remove();
+        $("#frm_add_mc").find("input[value='" + d + "']").remove();
+    });
+    
+    $("#frm_add_mc").on("click", ".btn-rmv-department", function(e){
+        e.preventDefault();
+        el = $(e.target);
+        $("#lst_departments").find("li:contains('" + el.attr('data-item') + "')").remove();
+        $("#frm_add_mc").find("input[value='" + d + "']").remove();
     });
 </script>
 @endsection
