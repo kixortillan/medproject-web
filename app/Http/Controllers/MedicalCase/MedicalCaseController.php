@@ -21,6 +21,7 @@ class MedicalCaseController extends Controller {
                 $body1 = json_decode($response->getBody());
 
                 return view('medical_case.add', [
+                    'med_case_num' => sprintf("MCN-%s%s", strtotime('now'), mt_rand(10000, 99999)),
                     'patient' => $body1->data->patient,
                 ]);
             }
@@ -28,6 +29,15 @@ class MedicalCaseController extends Controller {
     }
 
     public function store(Request $request) {
+        $request->flash();
+        
+        $this->validate($request, [
+            'txt_med_case_num' => 'bail|required',
+            'hdn_patient_id' => 'bail|required',
+            'hdn_departments' => 'bail|required',
+            'hdn_diagnoses' => 'bail|required',
+        ]);
+
         try {
             $medCaseNum = $request->input('txt_med_case_num');
             $patientId = $request->input('hdn_patient_id');

@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+@if(session('message') != null)
+    <div class="alert alert-success alert-dismissable text-center" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{ session('message') }}</div>
+@endif
 <div class="row">
     <div class="col-sm-offset-11 col-sm-1">
         <div class="panel">

@@ -1,14 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
+@if(count($errors) > 0)
+    <div class="alert alert-danger alert-dismissable text-center" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{ $errors->first() }}</div>
+@endif
 <form id="frm_add_mc" action="{{ url('cases/add') }}" method="post" class="form-horizontal">
     {{ csrf_field() }}
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary col-sm-offset-11 col-sm-1">Save</button>
+    </div>
     <fieldset>
         <legend>Add Medical Case</legend>
         <div class="form-group">
             <label class="col-sm-offset-2 col-sm-2">Case Serial Number</label>
             <div class="col-sm-6">
-                <input name="txt_med_case_num" type="text" value="{{ sprintf("MCN-%s%s", strtotime('now'), mt_rand(10000, 99999)) }}" class="form-control" readonly>
+                <input name="txt_med_case_num" type="text" value="{{ old('txt_med_case_num')!= null ? old('txt_med_case_num') : $med_case_num }}" class="form-control" readonly>
             </div>
         </div>
         @if(isset($patient))
@@ -62,9 +68,6 @@
             </div>
         </div>
     </fieldset>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary col-sm-offset-5 col-sm-2">Save</button>
-    </div>
 </form>
 @endsection
 @section('scripts')
@@ -90,13 +93,14 @@
 
     $('#txt_diagnosis_search').typeahead({highlight: true}, {
         name: 'diagnosis',
+        limit: 100,
         display: function(data){
             return data.name;
         },
         source: diagnoses,
         templates: {
-            empty: '<div class="noitems">No Items Found</div>',
-            header: '<div class="tt-header">Diagnosis</div>',
+            notFound: '<div class="noitems">No Items Found</div>',
+            header: '<div class="tt-header">Diagnoses</div>',
             suggestion: function(data){
                 return '<div>' + data.name + '</div>';
             },
@@ -112,8 +116,9 @@
             filter: function (dept) {
                 return $.map(dept, function (item) {
                     return {
+                        code: item.code,
                         name: item.name,
-                        desc: item.code,
+                        desc: item.desc,
                     };
                 });
             }
@@ -123,13 +128,14 @@
     dept.initialize();
 
     $('#txt_department_search').typeahead({highlight: true}, {
-        name: 'diagnosis',
+        name: 'department',
+        limit: 100,
         display: function(data){
             return data.name;
         },
         source: dept,
         templates: {
-            empty: '<div class="noitems">No Items Found</div>',
+            notFound: '<div class="noitems">No Items Found</div>',
             header: '<div class="tt-header">Departments</div>',
             suggestion: function(data){
                 return '<div>' + data.name + '</div>';
@@ -143,7 +149,7 @@
         e.val('');
         if(d == '')return;
         if($("#frm_add_mc").find("input[value='" + d + "']").length > 0) return;
-        $("#lst_diagnoses").append('<li class="list-group-item">' + d + '<span class="btn-rmv-diagnosis pull-right glyphicon glyphicon-remove" data-item="' + d + '"></span></li>');
+        $("#lst_diagnoses").append('<li class="list-group-item">' + d + '<button type="button" class="close btn-rmv-diagnosis" data-item="' + d + '"><span aria-hidden="true">&times;</span></li>');
         $("#frm_add_mc").append('<input type=hidden name="hdn_diagnoses[]" value="' + d + '">');
     });
     
@@ -153,7 +159,7 @@
         e.val('');
         if(d == '')return;
         if($("#frm_add_mc").find("input[value='" + d + "']").length > 0) return;
-        $("#lst_departments").append('<li class="list-group-item">' + d + '<span class="btn-rmv-department pull-right glyphicon glyphicon-remove" data-item="' + d + '"></span></li>');
+        $("#lst_departments").append('<li class="list-group-item">' + d + '<button type="button" class="close btn-rmv-department" data-item="' + d + '"><span aria-hidden="true">&times;</span></li>');
         $("#frm_add_mc").append('<input type=hidden name="hdn_departments[]" value="' + d + '">');
     });
     

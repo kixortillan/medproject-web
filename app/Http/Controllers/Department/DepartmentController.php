@@ -69,6 +69,7 @@ class DepartmentController extends Controller {
             $json[] = [
                 'name' => $item->name,
                 'code' => $item->code,
+                'desc' => $item->desc,
             ];
         }
 
