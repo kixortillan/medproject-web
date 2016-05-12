@@ -4,21 +4,21 @@
 <form action="{{ url('departments/add') }}" method="post" class="form-horizontal">
     {{ csrf_field() }}
     <fieldset>
-        <legend>Add Department</legend>
+        <legend>New Department</legend>
         <div class="form-group">
-            <label class="col-sm-offset-2 col-sm-2">Department Code</label>
+            <label class="col-sm-offset-2 col-sm-2">Code</label>
             <div class="col-sm-6">
                 <input type="text" name="txt_dept_code" class="form-control">
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-offset-2 col-sm-2">Department Name</label>
+            <label class="col-sm-offset-2 col-sm-2">Name</label>
             <div class="col-sm-6">
                 <input type="text" name="txt_dept_name" class="form-control">
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-offset-2 col-sm-2">Department Description</label>
+            <label class="col-sm-offset-2 col-sm-2">Description</label>
             <div class="col-sm-6">
                 <input type="text" name="txt_dept_desc" class="form-control">
             </div>

@@ -2,7 +2,7 @@
 
 @section('content')
 @if(session('message') != null)
-    <div class="alert alert-success alert-dismissable text-center" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{ session('message') }}</div>
+<div class="alert alert-success alert-dismissable text-center" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{ session('message') }}</div>
 @endif
 <div class="row">
     <div class="col-sm-offset-11 col-sm-1">
@@ -20,14 +20,14 @@
                 </tr>
             </thead>
             <tbody class="text-center">
-                @if(count($result) < 1)
+                @if(count($paginator) < 1)
                 <tr>
                     <td colspan="5">
                         No records found.
                     </td>
                 </tr>
                 @endif
-                @foreach($result as $patient)
+                @foreach($paginator as $patient)
                 <tr>
                     <td>
                         <div class="btn-group">
@@ -50,7 +50,7 @@
     </div>
     <div class="col-sm-12">
         <div class="pull-right">
-            {!! $result->render() !!}
+            {!! $paginator->render() !!}
         </div>
     </div>
 </div>

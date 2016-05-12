@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Department;
 
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Exception;
@@ -12,12 +14,16 @@ class DepartmentController extends Controller {
         parent::__construct();
     }
 
-    public function index() {
+    public function index(Request $request) {
         $response = $this->api->request('GET', 'departments');
 
-        $departments = json_decode($response->getBody());
+        $body = json_decode($response->getBody());
 
-        return view('department.index', ['departments' => $departments->data->departments]);
+        $paginator = new LengthAwarePaginator($body->data->departments, $body->total, 1, Paginator::resolveCurrentPage(), ['path' => $request->path()]);
+
+        return view('department.index', [
+            'paginator' => $paginator
+        ]);
     }
 
     public function store(Request $request) {
@@ -40,8 +46,14 @@ class DepartmentController extends Controller {
         return redirect('departments')->with('message', 'Successfully added department');
     }
 
-    public function edit(Request $request) {
-        
+    public function edit(Request $request, $id) {
+        if ($request->method() == Request::METHOD_GET) {
+            $response = $this->api->request("GET", "departments/{$id}");
+
+            $body = json_decode($response->getBody());
+
+            return view('department.edit', ['department' => $body->data->department]);
+        }
     }
 
     public function delete(Request $request, $id) {

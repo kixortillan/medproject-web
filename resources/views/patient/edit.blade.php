@@ -14,19 +14,19 @@
         <fieldset>
             <legend>Patient Information</legend>
             <div class="form-group">
-                <label class="control-label col-sm-3">First Name</label>
+                <label class="control-label col-sm-offset-1 col-sm-3">First Name</label>
                 <div class="col-sm-5">
                     <input name="txt_first_name" class="form-control" type="text" value="{{ $patient->first_name }}">
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-sm-3">Middle Name</label>
+                <label class="control-label col-sm-offset-1 col-sm-3">Middle Name</label>
                 <div class="col-sm-5">
                     <input name="txt_middle_name" class="form-control" type="text" value="{{ $patient->middle_name }}">
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-sm-3">Last Name</label>
+                <label class="control-label col-sm-offset-1 col-sm-3">Last Name</label>
                 <div class="col-sm-5">
                     <input name="txt_last_name" class="form-control" type="text" value="{{ $patient->last_name }}">
                 </div>
@@ -35,13 +35,13 @@
         <fieldset>
             <legend>Additional Information</legend>
             <div class="form-group">
-                <label class="control-label col-sm-3">Address</label>
+                <label class="control-label col-sm-offset-1 col-sm-3">Address</label>
                 <div class="col-sm-5">
                     <input name="txt_address" class="form-control" type="text" value="{{ $patient->address }}">
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-sm-3">Postal Code</label>
+                <label class="control-label col-sm-offset-1 col-sm-3">Postal Code</label>
                 <div class="col-sm-5">
                     <input name="txt_postal_code" class="form-control" type="text" value="{{ $patient->postal_code }}">
                 </div>

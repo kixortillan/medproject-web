@@ -24,6 +24,7 @@ Route::get('departments/add', 'Department\DepartmentController@store');
 Route::post('departments/add', 'Department\DepartmentController@store');
 
 Route::get('departments/edit/{id}', 'Department\DepartmentController@edit');
+Route::post('departments/edit', 'Department\DepartmentController@edit');
 Route::get('departments/delete/{id}', 'Department\DepartmentController@delete');
 Route::get('departments/search', 'Department\DepartmentController@search');
 

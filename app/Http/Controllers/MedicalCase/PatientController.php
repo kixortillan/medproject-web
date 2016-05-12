@@ -4,8 +4,8 @@ namespace App\Http\Controllers\MedicalCase;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 
 class PatientController extends Controller {
 
@@ -22,7 +22,7 @@ class PatientController extends Controller {
 
         $paginator = new LengthAwarePaginator($body->data->patients, $body->total, 1, \Illuminate\Pagination\Paginator::resolveCurrentPage(), ['path' => $request->path()]);
 
-        return view('patient.index', ['result' => $paginator]);
+        return view('patient.index', ['paginator' => $paginator]);
     }
 
     public function store(Request $request) {
@@ -88,11 +88,13 @@ class PatientController extends Controller {
     }
 
     public function delete(Request $request, $id) {
+        $response = $this->api->request("DELETE", "patients/{$id}");
         
-    }
-
-    public function fileCase(Request $request, $id) {
-        return view('medical_case.add');
+        if($response->getStatusCode() != Response::HTTP_OK){
+            
+        }
+            
+        return redirect('patients')->with('message', 'Successfully deleted patient.');
     }
 
 }
