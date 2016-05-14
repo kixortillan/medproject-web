@@ -9,7 +9,15 @@ use Exception;
 class MedicalCaseController extends Controller {
 
     public function index() {
-        return view('medical_case.index');
+        $page = $request->query('page', 1);
+
+        $response = $this->api->request(Request::METHOD_GET, "patients?page={$page}");
+
+        $body = json_decode($response->getBody());
+
+        $paginator = new LengthAwarePaginator($body->data->patients, $body->total, 1, \Illuminate\Pagination\Paginator::resolveCurrentPage(), ['path' => $request->path()]);
+
+        return view('medical_case.index', ['paginator' => $paginator]);
     }
 
     public function create(Request $request, $id = null) {
@@ -30,7 +38,7 @@ class MedicalCaseController extends Controller {
 
     public function store(Request $request) {
         $request->flash();
-        
+
         $this->validate($request, [
             'txt_med_case_num' => 'bail|required',
             'hdn_patient_id' => 'bail|required',
