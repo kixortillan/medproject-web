@@ -3,19 +3,20 @@
 namespace App\Http\Controllers\MedicalCase;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Exception;
 
 class MedicalCaseController extends Controller {
 
-    public function index() {
+    public function index(Request $request) {
         $page = $request->query('page', 1);
 
-        $response = $this->api->request(Request::METHOD_GET, "patients?page={$page}");
+        $response = $this->api->request(Request::METHOD_GET, "cases?page={$page}");
 
         $body = json_decode($response->getBody());
-
-        $paginator = new LengthAwarePaginator($body->data->patients, $body->total, 1, \Illuminate\Pagination\Paginator::resolveCurrentPage(), ['path' => $request->path()]);
+        
+        $paginator = new LengthAwarePaginator($body->data->medical_cases, $body->total, 1, \Illuminate\Pagination\Paginator::resolveCurrentPage(), ['path' => $request->path()]);
 
         return view('medical_case.index', ['paginator' => $paginator]);
     }

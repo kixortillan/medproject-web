@@ -15,8 +15,7 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th>Name</th>
-                    <th>Date Registered</th>
+                    <th>Medical Case Number</th>
                 </tr>
             </thead>
             <tbody class="text-center">
@@ -27,7 +26,7 @@
                     </td>
                 </tr>
                 @endif
-                @foreach($paginator as $patient)
+                @foreach($paginator as $item)
                 <tr>
                     <td>
                         <div class="btn-group">
@@ -35,14 +34,13 @@
                                 <span class="glyphicon glyphicon-menu-hamburger"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a href="{{ url("patients/{$patient->id}/cases/add") }}">New Case</a></li>
-                                <li><a href="{{ url("patients/edit/{$patient->id}") }}">Edit</a></li>
-                                <li><a href="{{ url("patients/delete/{$patient->id}") }}">Delete</a></li>
+                                <li><a href="{{ url("patients/{$item->id}/cases/add") }}">New Case</a></li>
+                                <li><a href="{{ url("patients/edit/{$item->id}") }}">Edit</a></li>
+                                <li><a href="{{ url("patients/delete/{$item->id}") }}">Delete</a></li>
                             </ul>
                         </div>
                     </td>
-                    <td>{{ $patient->full_name }}</td>
-                    <td>{{ $patient->date_registered }}</td>
+                    <td>{{ $item->serial_num }}</td>
                 </tr>
                 @endforeach
             </tbody>
