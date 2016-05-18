@@ -23,7 +23,7 @@ class Controller extends BaseController {
         try {
             $this->api = new Client([
                 'base_uri' => config('api.url'),
-                'timeout' => '5'
+                'timeout' => '30'
             ]);
         } catch (Exception $ex) {
             throw $ex;

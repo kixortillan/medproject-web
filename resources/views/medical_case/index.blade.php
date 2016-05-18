@@ -34,9 +34,9 @@
                                 <span class="glyphicon glyphicon-menu-hamburger"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a href="{{ url("patients/{$item->id}/cases/add") }}">New Case</a></li>
-                                <li><a href="{{ url("patients/edit/{$item->id}") }}">Edit</a></li>
-                                <li><a href="{{ url("patients/delete/{$item->id}") }}">Delete</a></li>
+                                <li><a href="{{ url("cases/add") }}">New Case</a></li>
+                                <li><a href="{{ url("cases/edit/{$item->id}") }}">Edit</a></li>
+                                <li><a href="{{ url("cases/delete/{$item->id}") }}">Delete</a></li>
                             </ul>
                         </div>
                     </td>

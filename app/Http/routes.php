@@ -41,5 +41,6 @@ Route::get('patients/edit/{id}', 'MedicalCase\PatientController@edit');
 Route::post('patients/edit', 'MedicalCase\PatientController@edit');
 Route::get('patients/delete/{id}', 'MedicalCase\PatientController@delete');
 Route::get('patients/{id}/cases/add', 'MedicalCase\MedicalCaseController@create');
+Route::get('patients/search', 'MedicalCase\PatientController@search');
 
 Route::get('diagnoses/search', 'MedicalCase\DiagnosisController@search');

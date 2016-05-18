@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\MedicalCase;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Http\Controllers\Controller;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Http\Request;
 use Exception;
 
@@ -15,23 +16,32 @@ class MedicalCaseController extends Controller {
         $response = $this->api->request(Request::METHOD_GET, "cases?page={$page}");
 
         $body = json_decode($response->getBody());
-        
-        $paginator = new LengthAwarePaginator($body->data->medical_cases, $body->total, 1, \Illuminate\Pagination\Paginator::resolveCurrentPage(), ['path' => $request->path()]);
 
-        return view('medical_case.index', ['paginator' => $paginator]);
+        $paginator = new LengthAwarePaginator($body->data->medical_cases
+                , $body->total
+                , $body->per_page
+                , Paginator::resolveCurrentPage()
+                , ['path' => $request->path()]
+        );
+
+        return view('medical_case.index', [
+            'paginator' => $paginator
+        ]);
     }
 
     public function create(Request $request, $id = null) {
         if ($request->method() == Request::METHOD_GET) {
             if (is_null($id)) {
-                return view('medical_case.add');
+                return view('medical_case.add', [
+                    'med_case_num' => sprintf("MCN-%s%s", strtotime('now'), mt_rand(10000, 99999)),
+                ]);
             } else {
                 $response = $this->api->request(Request::METHOD_GET, "patients/{$id}");
-                $body1 = json_decode($response->getBody());
+                $body = json_decode($response->getBody());
 
                 return view('medical_case.add', [
                     'med_case_num' => sprintf("MCN-%s%s", strtotime('now'), mt_rand(10000, 99999)),
-                    'patient' => $body1->data->patient,
+                    'patient' => $body->data->patient,
                 ]);
             }
         }
@@ -66,8 +76,20 @@ class MedicalCaseController extends Controller {
         }
     }
 
-    public function edit() {
-        
+    public function edit(Request $request, $id) {
+        if ($request->method() == Request::METHOD_GET) {
+            $response = $this->api->request("GET", "cases/{$id}");
+
+            $body = json_decode($response->getBody());
+
+            return view('medical_case.edit', [
+                'serial_num' => $body->data->medical_case->serial_num,
+                'medical_case_id' => $body->data->medical_case->id,
+                'patient' => head($body->data->medical_case->patients),
+                'departments' => $body->data->medical_case->departments,
+                'diagnoses' => $body->data->medical_case->diagnoses,
+            ]);
+        }
     }
 
     public function delete() {

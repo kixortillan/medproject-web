@@ -4,6 +4,7 @@ namespace App\Http\Controllers\MedicalCase;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Http\Controllers\Controller;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 
@@ -20,9 +21,16 @@ class PatientController extends Controller {
 
         $body = json_decode($response->getBody());
 
-        $paginator = new LengthAwarePaginator($body->data->patients, $body->total, 1, \Illuminate\Pagination\Paginator::resolveCurrentPage(), ['path' => $request->path()]);
+        $paginator = new LengthAwarePaginator($body->data->patients
+                , $body->total
+                , $body->per_page
+                , Paginator::resolveCurrentPage()
+                , ['path' => $request->path()]
+        );
 
-        return view('patient.index', ['paginator' => $paginator]);
+        return view('patient.index', [
+            'paginator' => $paginator
+        ]);
     }
 
     public function store(Request $request) {
@@ -83,18 +91,37 @@ class PatientController extends Controller {
                 'postal_code' => $postalCode,
             ]
         ]);
-        
+
         return redirect('patients')->with('message', 'Successfully updated patient information.');
     }
 
     public function delete(Request $request, $id) {
         $response = $this->api->request("DELETE", "patients/{$id}");
-        
-        if($response->getStatusCode() != Response::HTTP_OK){
+
+        if ($response->getStatusCode() != Response::HTTP_OK) {
             
         }
-            
+
         return redirect('patients')->with('message', 'Successfully deleted patient.');
+    }
+    
+    public function search(Request $request) {
+        $keyword = $request->query('query', null);
+
+        $response = $this->api->request("GET", "search/patients?keyword={$keyword}");
+
+        $departments = json_decode($response->getBody());
+
+        $json = [];
+
+        foreach ($departments->data->patients as $item) {
+            $json[] = [
+                'id' => $item->id,
+                'full_name' => $item->full_name,
+            ];
+        }
+
+        return response()->json($json);
     }
 
 }
