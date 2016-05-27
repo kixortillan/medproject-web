@@ -52,14 +52,14 @@ class MedicalCaseController extends Controller {
 
         $this->validate($request, [
             'txt_med_case_num' => 'bail|required',
-            'hdn_patient_id' => 'bail|required',
+            'hdn_patients' => 'bail|required',
             'hdn_departments' => 'bail|required',
             'hdn_diagnoses' => 'bail|required',
         ]);
 
         try {
             $medCaseNum = $request->input('txt_med_case_num');
-            $patientId = $request->input('hdn_patient_id');
+            $patientId = $request->input('hdn_patients');
             $departmentIds = $request->input('hdn_departments');
             $diagnoses = $request->input('hdn_diagnoses');
 
@@ -71,6 +71,8 @@ class MedicalCaseController extends Controller {
                     'diagnosis' => $diagnoses,
                 ]
             ]);
+            
+            return redirect('cases')->with('message', 'Successfully created medical case');
         } catch (Exception $ex) {
             throw $ex;
         }

@@ -6,6 +6,8 @@
 @endif
 <form id="frm_add_mc" action="{{ url('cases/add') }}" method="post" class="form-horizontal">
     {{ csrf_field() }}
+    <input id="hdn_sel_patient_id" type="hidden" value="">
+    <input id="hdn_sel_dept_id" type="hidden" value="">
     <div class="form-group">
         <button type="submit" class="btn btn-primary col-sm-offset-11 col-sm-1">Save</button>
     </div>
@@ -52,21 +54,33 @@
         </div>
     </fieldset>
     <fieldset>
-        <legend>Diagnoses</legend>
+        <legend>Patient</legend>
         <div class="panel panel-default">
             <div class="panel-body">
                 <ul id="lst_diagnoses" class="list-group"></ul>
             </div>
         </div>
     </fieldset>
-    <fieldset>
-        <legend>Departments</legend>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <ul id="lst_departments" class="list-group"></ul>
+    <div class="col-sm-6">
+        <fieldset>
+            <legend>Diagnoses</legend>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <ul id="lst_diagnoses" class="list-group"></ul>
+                </div>
             </div>
-        </div>
-    </fieldset>
+        </fieldset>
+    </div>
+    <div class="col-sm-6">
+        <fieldset>
+            <legend>Departments</legend>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <ul id="lst_departments" class="list-group"></ul>
+                </div>
+            </div>
+        </fieldset>
+    </div>
 </form>
 @endsection
 @section('scripts')
@@ -117,6 +131,7 @@
             filter: function(dept) {
                 return $.map(dept, function(item) {
                     return {
+                        id: item.id,
                         code: item.code,
                         name: item.name,
                         desc: item.desc,
@@ -144,6 +159,8 @@
                 return '<div>' + data.name + '</div>';
             },
         }
+    }).on("typeahead:select", function(obj, datum){
+        $("#hdn_sel_dept_id").val(datum.id);
     });
     
     var patient = new Bloodhound({
@@ -181,8 +198,8 @@
                 return '<div>' + data.full_name + '</div>';
             },
         }
-    }).on("typeahead:select", function(){
-        
+    }).on("typeahead:select", function(obj, datum){
+        $("#hdn_sel_patient_id").val(datum.id);
     });
     
     $("#btn_add_diagnosis").click(function() {
@@ -195,14 +212,25 @@
         $("#frm_add_mc").append('<input type=hidden name="hdn_diagnoses[]" value="' + d + '">');
     });
     
-    $("#btn_add_department").click(function() {
+    $("#btn_add_department").click(function () {
         e = $("#txt_department_search");
         d = e.val();
         e.val('');
+        if(d == '')return;
+        if($("#frm_add_mc").find("input[value='" + d + "']").length > 0) return;
+        $("#lst_departments").append('<li class="list-group-item">' + d + '<button type="button" class="close btn-rmv-department" data-item="' + d + '"><span aria-hidden="true">&times;</span></li>');
+        $("#frm_add_mc").append('<input type=hidden name="hdn_departments[]" value="' + $("#hdn_sel_dept_id").val() + '">');
+        $("#hdn_sel_dept_id").val('');
+    });
+    
+    $("#btn_add_patient").click(function() {
+        e = $("#txt_patient_search");
+        d = e.val();
         if (d == '') return;
         if ($("#frm_add_mc").find("input[value='" + d + "']").length > 0) return;
-        $("#lst_departments").append('<li class="list-group-item">' + d + '<button type="button" class="close btn-rmv-department" data-item="' + d + '"><span aria-hidden="true">&times;</span></li>');
-        $("#frm_add_mc").append('<input type=hidden name="hdn_departments[]" value="' + d + '">');
+        $("#frm_add_mc").append('<input type=hidden name="hdn_patients[]" value="' + $("#hdn_sel_patient_id").val() + '">');
+        $("#hdn_sel_dept_id").val('');
+        e.attr('readonly', true).css('background-color', '');
     });
     
     $("#frm_add_mc").on("click", ".btn-rmv-diagnosis", function(e) {

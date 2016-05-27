@@ -18,6 +18,7 @@ Route::get('/', function () {
 Route::auth();
 
 Route::get('home', 'HomeController@index');
+Route::get('dashboard', 'Dashboard\DashboardController@index');
 Route::get('departments', 'Department\DepartmentController@index');
 
 Route::get('departments/add', 'Department\DepartmentController@store');

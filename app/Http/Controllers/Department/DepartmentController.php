@@ -79,6 +79,7 @@ class DepartmentController extends Controller {
 
         foreach ($departments->data->departments as $item) {
             $json[] = [
+                'id' => $item->id,
                 'name' => $item->name,
                 'code' => $item->code,
                 'desc' => $item->desc,

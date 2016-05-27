@@ -1,4 +1,4 @@
-// @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
 .autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
 .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
@@ -9,6 +9,10 @@
 
 .twitter-typeahead{
     display: block !important;
+}
+
+.twitter-typeahead > input{
+    @extend .form-control;
 }
 
 .tt-header{

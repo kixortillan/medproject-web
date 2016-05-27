@@ -27,14 +27,13 @@ class DiagnosisController extends Controller {
 
         foreach ($apiResult->data->diagnoses as $item) {
             $json[] = [
+                'id' => $item->id,
                 'name' => $item->name,
                 'desc' => $item->desc,
             ];
-            //$json[] = $item->name;
         }
 
         return response()->json($json);
-        //return response()->json(["query" => $keyword, "suggestions" => $json]);
     }
 
 }
